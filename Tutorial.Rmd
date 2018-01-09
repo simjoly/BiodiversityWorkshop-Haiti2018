@@ -1,7 +1,7 @@
 ---
-title: "Atelier sur les données de biodiversité (Haïti 2018)"
+title: "Atelier sur les données de biodiversité"
 author: "Simon Joly"
-date: "January 2018"
+date: "Haïti, janvier 2018"
 output:
   html_document:
     highlight: haddock
@@ -28,7 +28,7 @@ l'atelier est préparé pour des personnes qui ont des connaissance minimales av
 [Dismo package]() -- C'est le package que l'on utilisera beaucoup dans ce tutoriel. Le manuel du package est plein d'informations utiles sur les données de biodiversité et donne une bonne idées des analyses qui sont possible d'effectuer.
 
 
-# Récupérer des données de biodiversité
+# Récupérer des données de biodiversité de GBIF
 
 C'est généralement la première étape à effectuer. On peut soit avoir nos propres données, ou soit les télécherger d'une base de données publique. On va utiliser un exemple ici avec le Global Biodiversity Information Facility (GBIF).
 
@@ -314,7 +314,7 @@ plot(caribbean, col=NA,add=TRUE)
 ```
 
 
-# Extraire des informations de cartes
+# Extraire des informations environnementales de cartes
 
 ## Données bioclimatiques
 
