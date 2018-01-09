@@ -154,20 +154,20 @@ caribbean <- readShapeSpatial("./data/pol6bg/pol6bg.shp")
 
 On peut maintenant la représenter avec la fonction `plot()`
 
-```{r "Plot Caribbean map", fig.height=4, fig.width=5, fig.align='center'}
+```{r "Plot Caribbean map", fig.align='center'}
 # Charger une carte des Caraïbes
 plot(caribbean)
 ```
 
 Il est cependant possible de mieux contrôler l'aperçu de la carte à l'aide d'options. Par exemple, on peut représenter seulement une partie de celle-ci en donnant les coordonnées minimales et maximales à représenter avec les option `xlim` et `ylim`. Voici un exemple:
 
-```{r "Nicer map", fig.height=4, fig.width=5, fig.align='center'}
+```{r "Nicer map", fig.align='center'}
 plot(caribbean, xlim=c(-75,-70), ylim=c(17,21), axes=TRUE, col="light yellow", cex.axis=0.8, tcl=-0.2, mgp=c(3,0.5,0))
 ```
 
 Maintenant que l'on a cette carte, on peut facilement ajouter les points d'occurence avec la fonction `points()`. La fonction `points()` requiert les latitudes et longitudes de chaque point. Voici l'ensemble des commandes nécessaires:
 
-```{r "Nicer map with points", fig.height=4, fig.width=5, fig.align='center'}
+```{r "Nicer map with points", fig.align='center'}
 # Représenter la carte géographique
 plot(caribbean, xlim=c(-75,-70), ylim=c(17,21), axes=TRUE, col="light yellow", cex.axis=0.8, tcl=-0.2, mgp=c(3,0.5,0))
 # Ajouter les points d'occurence
@@ -214,7 +214,7 @@ title("Occurences de Miconia subcompressa")
 ```
 
 
-## Challenge #1
+## Challenge 1
 
 En vous inspirant de l'exemple ci-dessus, essayez de faire une carte d'occurence pour l'expèce Miconia tetrastoma.
 
@@ -287,6 +287,31 @@ plot(caribbean, col=NA,add=TRUE)
 ```
 
 On voit que la résolution est plus fine. Cependant, comme il y a peu de données, ça fait plusieurs trous dans la carte de diversité.
+
+
+## Challenge 2
+
+Pour le défi #2, je vais vous demander de créer une carte de diversité, mais pour toutes les espèces de plantes présentes sur GBIF. Pour ce faire, il faut d'abord importer ces données.
+
+```{r}
+load(file="./data/plantes_haiti_gbif.Rdata")
+```
+
+L'objet contenant les données s'appelle `plantes_haiti_gbif`. Ce sont des données téléchargées en septembre 2017. Vous pouvez y jeter un coup d'oeil.
+
+```{r}
+head(plantes_haiti_gbif)
+```
+
+Le tableau contient les espèces dans la première colonne, suivi de la longitude et de la latitude, comme précédemment. Donc, vous pourrez utiliser la fonction de la même façon. Maintenant, tentez de créer une carte de biodiversité de toutes les espèces de plantes. Qu'est-ce que vous pouvez conclure de cette carte?
+
+```{r "challenge 2", echo=FALSE, eval=FALSE, fig.align='center'}
+map3 <- biodivmap(plantes_haiti_gbif, xdiv=20, ydiv=20, xmin=-75, xmax=-70, ymin=17, ymax=21)
+# Créer la carte de diversité
+plot(map3, col=colorPalette,main="Nombre d'espèces de plantes", cex.axis=0.8, tcl=-0.2, mgp=c(3,0.5,0))
+plot(caribbean, col=NA,add=TRUE)
+
+```
 
 
 # Extraire des informations de cartes
@@ -401,16 +426,13 @@ On obtien ainsi les moyennes pour toutes les espèces pour chaque variable. On p
 
 # Modélisation
 
-Ces variables environementales peuvent aussi servir à faire des modèles de distribution d'espèces.
+Ces variables environementales peuvent aussi servir à faire des modèles de distribution d'espèces. Ces modèles permettent de donner une probabiliter de trouver l'espèce d'intérêt à un endroit donné. Pour faire ce calcul, les approches tiennent compte des conditions environnementales où l'espèce a été trouvé et des conditions environnementales à chaque point de la carte. L'idée générale est de se demander où les espèces sont le plus propices de se retrouver étant donné les conditions dans lesquelles elles ont été observées.
 
-Pour pouvoir faire un modèle de distribution des espèces, on doit avoir des variables disponible pour l'ensemble du territoire où se trouvent les occurences et ou on veut prédire la probabilité de présence des espèces. On veut idéalement le plus de variable environnementales possible, mais on commence souvent à l'aide de données bioclimatiques, c'est à dire qui utilisent la température et les précipitation, parce qu'elles sont très facile à obtenir. La source la plus communément utilisée est [WorldClim](http://www.worldclim.org/version1), où il est possible d'obtenir les données climatiques actuelles, mais aussi passées et futures. Il suffit de les télécharger, de les décrompresser, et de placer le dossier dans le répertoire de travail.
+Pour pouvoir faire un modèle de distribution des espèces, on doit avoir des variables disponibles pour l'ensemble du territoire où se trouvent les occurences et où l'on veut prédire la probabilité de présence des espèces. On veut idéalement le plus de variable environnementales possible, mais on commence souvent à l'aide de données bioclimatiques, c'est à dire qui utilisent la température et les précipitation, parce qu'elles sont très facile à obtenir. C'est ce que nous ferons ici.
 
+Plusieurs méthodes existent pour de telles modélisation, mais plusieurs requièrent des données d'absence, c'est à dire des endroit où l'on est certain que l'espèce ne se trouve pas. C'est un type de données qui n'est généralement pas disponible avec les données d'occurence. Certaines méthodes acceptent cependant des pseudo-absences, c'est à dire des points aléatoirement pigés dans la région que l'on veut modéliser. C'est le cas de la méthode appellée [Maxent](https://biodiversityinformatics.amnh.org/open_source/maxent/). Pour utiliser Maxent, il faut télécharger le logiciel d'internet et ensuite le placer dans la package `dismo` pour qu'il puisse être utilisé.
 
-On peut maintenant se lancer dans la modélisatin de distribution d'espèces. L'idée avec cette approche est de se demander où les espèces sont le plus propices de se retrouvé étant donné les conditions dans lesquelles elles ont été observées.
-
-Plusieurs méthodes existent pour de telles modélisation, mais plusieurs requièrent des données d'absence, c'est à dire des endroit où l'on est certain que l'espèce ne se trouve pas. C'est un type de données qui n'est généralement pas disponible avec les données d'occurence. Certaines méthodes acceptent cependant des pseudo-absences, c'est à dire des points aléatoirement pigés dans la région que l'on veut modéliser. C'est le cas de la méthode appellée MaxEnt. Pour utiliser MaxEnt, il faut la télécharger d'internet et ensuite la placer dans la package `dismo` pour qu'il puisse être utilisé.
-
-Par faciliter l'installation, j'ai placé une copie de MaxEnt (maxent.jar) dans le dossier de l'atelier. Il faut siplement le copier dans le logiciel `dismo`. Pour ce faire, exécutez le bloc de commande suivant dans R.
+Pour faciliter l'installation, j'ai déjà placé une copie du logiciel Maxent dans le dossier de l'atelier. Il faut siplement copier le logiciel maxent.jar dans le package `dismo`. Pour ce faire, exécutez le bloc de commande suivant dans R.
 
 ```{r}
 p <- system.file("java", package="dismo")
@@ -423,37 +445,60 @@ if(.Platform$OS.type == "unix") {
 }
 ```
 
+## Échantillonnage des points aléatoires
 
-La première étape consiste donc à sélectionner des points aléatoire dans la région d'intérêt.
+La première étape consiste à sélectionner des points aléatoire dans la région d'intérêt. Ceci peut être fait avec la fonction `randomPoints`.
 
 ```{r "points aléatoires", warning=FALSE}
 set.seed(0)
 absences <- randomPoints(bioclim, 500)
 ```
 
+
+## Modélisation
+
+Maintenant, on peut créer un modèle de distribution d'espèce avec Maxent. Pour ce faire on utilise la fonction `maxent`. On peut ensuite regarder les détails du modèle.
+
 ```{r "model with MaxEnt"}
 # Créer un modèle pour Miconia subcompressa
 Msubcompressa.model <- maxent(bioclim, p=Msubcompressa_gbif[,2:3], a=absences)
+# Regarder les informations sur le modèle créé
+Msubcompressa.model
+```
+
+Une fenêtre de votre fureteur internet devrait s'ouvrir suite à la dernière commande pour vous montrer les détails du modèle. On peut voir l'ajustement du modèle, où on espèce un AUC > 0.95. On peut aussi voir les variables qui ont été choisi comme étant les plus importantes pour construire le modèle. Ça peut donner une idée des variables qui permettre de différencier les espèces. Attention cependant, car les différentes variables peuvent être hautement corrélées et une telle interprétation peut être biaisée.
+
+## Prédiction
+
+Maintenant que nous avons un modèle, on peut faire des prédiction sur un territoire donnée. C'est ce qui donnera le modèle de ditribution d'espèce où l'on trouvera les probabilités que l'espèce d'intérêt puisse se trouver.
+
+```{r, fig.align='center'}
+# Contruction de la carte prédictive
 Msubcompressa.prediction <- predict(Msubcompressa.model, bioclim)
+# Représentation de la carte
 plot(Msubcompressa.prediction)
 plot(caribbean, add=TRUE)
 ```
 
 ## Prédire la distribution d'epèces dans le futur
 
-Si des données environnementales existent pour d'autre période de temps, il est possible de prédire la distribution des espèces dans ces nouveaux cadre. Les résultats sont à interpréter avec prudence, parce que cela implique que rien d'autre que les variables étudiées vont affecter les distributions d'espèces. Hors, les espèces peuvent migrer s'adapter à des nouvelles conditions et d'autres variables non étudiées pourraient s'avérer très importantes pour prédire la distribution des espèces. Néanmoins, ça peut être un exercise intéressant.
+Si des données environnementales existent pour d'autres périodes de temps (passé ou futur), il est possible de prédire la distribution des espèces dans ces nouveaux cadres. Les résultats sont à interpréter avec prudence, parce que cela implique que rien d'autre que les variables étudiées vont affecter les distributions d'espèces. Hors, les espèces peuvent migrer ou s'adapter à des nouvelles conditions et d'autres variables non étudiées pourraient s'avérer très importantes pour prédire la distribution des espèces. Néanmoins, ça peut être un exercise intéressant.
 
-Des modèles climatiques ont permis de prédire la tepérature et les précipitations dans le futur. De telles données sont disponibles sur le ste de worldclim et peuvent être téléchargées afin de tester où il serait le plus probable de trouver les espèces dans le futur.
+Des modèles climatiques ont permis de prédire la tepérature et les précipitations dans le futur. De telles données sont disponibles sur le site de Worldclim et peuvent être téléchargées afin de tester où il serait le plus probable de trouver les espèces dans le futur. Pour cet atelier, les données futures ont déjà été chargées plus tôt avec les données actuelles. Elles s'appellent `futureclim`. Ces données correspondent aux prédiction de climat et précipiration de 2050 selon un scénario RCP (Representative Concentration Pathway) correspondant à +4,5 $W/m^2$. Pour plus d'informations sur ces prédictions, cliquez [ici](https://fr.wikipedia.org/wiki/Sc%C3%A9nario_RCP).
 
-Pour ce faire, il s'agit seulement d'utiliser le modèle contruit avec les données actuelles pour prédire la présence de l'espèces sur les données futures. Les données futures ont été chargées plus tôt avec les données actuelles.
+Pour faire un modèle de distribution d'espèces dans le futur, il s'agit seulement d'utiliser le modèle contruit avec les données actuelles et utiliser la fonction `predict`, tout comme ci-haut, mais cette fois avec les données climatiques de 2050. 
 
-```{r 'climat futur'}
+```{r 'climat futur', fig.align='center'}
+# Modèle selon les prédiction de 2050
 Msubcompressa.future <- predict(Msubcompressa.model, futureclim)
+# Cartographie
 plot(Msubcompressa.future)
 plot(caribbean, add=TRUE)
 ```
 
 ## Challenge 3
+
+En suivant les exemples ci-haut, faire un modèle de distribution d'espèce pour *Miconia subcompressa*, pour les données bioclimatiques actuelles et futures. Est-ec que les deux modèles se ressemblent?
 
 ```{r "MaxEnt challenge", eval=FALSE, echo=FALSE}
 # Créer un modèle pour Miconia subcompressa
@@ -474,3 +519,5 @@ miconia.future <- predict(miconia.model, futureclim)
 plot(miconia.future)
 plot(caribbean, add=TRUE)
 ```
+
+
