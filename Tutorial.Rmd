@@ -179,7 +179,7 @@ Pour la commande `points()`, l'option `pch` contrôle le type de forme, `col` la
 Cette carte représente l'ensemble des collections du genre Miconia possédant des coordonnées géographiques sur le serveur GBIF.
 
 
-### Carte montrants plusieurs espèces
+### Carte montrant plusieurs espèces
 
 Il pourrait être intéressant de montrer les différentes espèces, par exemple en donnan une couleur différente à chaque espèce. Une telle carte demande un peu plus d'étapes à faire, mais ce n'est pas très compliqué.
 
@@ -196,8 +196,9 @@ length(miconia_sp)
 
 Comme vous pouvez voir, il y a un total de 40 espèces de Miconia pour lesquelles on a des données d'occurence à Haïti.
 
-Maintenant, on veut créer un vecteur de couleur pour associer chaque espèces à une couleur différente. Ceci peut être fait avec la fonction .
+Maintenant, on veut créer un vecteur de couleur pour associer chaque espèces à une couleur différente. Ceci peut être fait avec la fonction.
 
+**Cette section n'est pas complétée...**
 
 ### Carte avec une seule espèce
 
