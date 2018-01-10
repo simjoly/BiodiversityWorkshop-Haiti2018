@@ -6,7 +6,7 @@ Ce dépôt contient le matériel pour un atelier d'une journée sur l'analyse de
 
 ## Matériel
 
-[Tutoriel](http://htmlpreview.github.com/?http://github.com/simjoly/BiodiversityWorkshop-Haiti2018/blob/master/Tutorial.html) | Tutoriel avec exemples dans R
+[Tutoriel](http://htmlpreview.github.com/?http://github.com/simjoly/BiodiversityWorkshop-Haiti2018/blob/master/Tutoriel.html) | Tutoriel avec exemples dans R
 
 [Solutions aux défis proposés dans le tutoriel]() | À venir ...
 
