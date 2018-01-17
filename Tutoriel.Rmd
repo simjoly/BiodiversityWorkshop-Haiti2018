@@ -1,5 +1,5 @@
 ---
-title: "Atelier sur les données de biodiversité"
+title: "Introduction à l'analyse de données de biodiversité"
 author: "Simon Joly"
 date: "Haïti, janvier 2018"
 output:
@@ -17,11 +17,22 @@ output:
 
 # Préface
 
-Le but de cet atelier est de donner une introduction à certains types d’analyses qui peuvent être effectuées à l’aide de données d’occurrences de biodiversité. Il contient des exercises dans le logiciel R. Bien que le logiciel soit un peu complexe d’utilisation, les avantages à l’utiliser compensent largement. En effet, une fois que les rudiments de R sont maîtrisés, il est possible d’effectuer une panoplie d’analyses, et même d’en développer selon ses propres besoins.
+Cet atelier est une introduction à l'analyse de données de biodiversité, en particulier des données d'occurence pouvant être tiré de spécimens d'herbier ou de données d'observation. L'atelier contient des exercises dans le logiciel [R](https://www.r-project.org/). Bien que le logiciel soit un peu complexe d’utilisation, les avantages à l’utiliser compensent largement. En effet, une fois que les rudiments de R sont maîtrisés, il est possible d’effectuer une panoplie d’analyses, et même d’en développer selon ses propres besoins.
+
+L'atelier va montrer comment construire des cartes d'occurrences et des cartes de biodiversité, comment extraire des informations environnementales et finalement comment créer des modèles de distribution d'espèce.
 
 L’atelier est préparé pour des personnes qui ont des connaissances minimales avec le logiciel R. Cependant, ce n’est pas une introduction au language R et à son utilisation. Les principes de bases seront expliqués, mais nous n’iront pas en profondeur. Les intéressés pourront se référer à d’autres tutoriels plus poussés sur le sujet.
 
+## Installer R et Rstudio
+
+Avant de commencer les exercices, il est nécessaire d'installer le logiciel R. Le logiciel peut être téléchargé à partir du site web https://cran.rstudio.com/.
+
+Je vous suggère aussi de télécharger Rstudio. Rstudio est un logiciel graphique qui permet d'intéragir de façon plus conviviale avec R. Vous pouvez le télécharger à partir du site web https://www.rstudio.com/products/rstudio/download/. La version gratuite est amplement suffisante et vous pouvez télécharger la version qui correspond à votre plateforme.
+
+
 ## Autres ressources pour R
+
+Si vous voulez en apprendre davantage sur le logiciel R et le language R, voici deux ressources intéressantes:
 
 [QCBS workshop](http://qcbs.ca/wiki/r_workshop4) -- Il s'agit d'un regroupement de tutoriels qui sont très bien expliqués. C'est une bonne introduction au logiciel R et aux analyses qu'il est possible d'utiliser dans R.
 
@@ -62,13 +73,6 @@ Cliquez ensuite sur "download" pour compléter le téléchargement. Le fichier a
 
 
 # Introduction à R
-
-
-## Installer R et Rstudio
-
-Avant de commencer les exercices, il est nécessaire d'installer le logiciel R. Le logiciel peut être téléchargé à partir du site web https://cran.rstudio.com/.
-
-Je vous suggère aussi de télécharger Rstudio. Rstudio est un logiciel graphique qui permet d'intéragir de façon plus conviviale avec R. Vous pouvez le télécharger à partir du site web https://www.rstudio.com/products/rstudio/download/. La version gratuite est amplement suffisante et vous pouvez télécharger la version qui correspond à votre plateforme.
 
 
 ## Obtenir le matériel pour l'atelier
@@ -179,27 +183,6 @@ Pour la commande `points()`, l'option `pch` contrôle le type de forme, `col` la
 Cette carte représente l'ensemble des collections du genre *Miconia* possédant des coordonnées géographiques sur le serveur GBIF.
 
 
-### Carte montrant plusieurs espèces
-
-Il pourrait être intéressant de montrer les différentes espèces, par exemple en donnant une couleur différente à chaque espèce. Une telle carte demande un peu plus d'étapes à faire, mais ce n'est pas très compliqué.
-
-Il faut tout d'abord créer une liste de toutes les espèces présentes dans les données.
-
-```{r "liste d'espèces"}
-miconia_sp <- unique(miconia_gbif$species)
-# L'objet miconia_sp est un vecteur contenant toutes les espèces
-# qui étaient présentes dans le jeu de données. On peut calculer le 
-# nombre total d'espèces dans le jeu de données en calculant la 
-# taille de ce vecteur de la façon suivante:
-length(miconia_sp)
-```
-
-Comme vous pouvez voir, il y a un total de 40 espèces de *Miconia* pour lesquelles on a des données d'occurrence à Haïti.
-
-Maintenant, on veut créer un vecteur de couleur pour associer chaque espèce à une couleur différente. Ceci peut être fait avec la fonction.
-
-**Cette section n'est pas complétée...**
-
 ### Carte avec une seule espèce
 
 De façon similaire, il peut être intéressant de faire une carte pour une seule espèce. Ceci est plus simple. Il s'agit de faire une nouvelle base de données, mais contenant les informations d'une seule espèce.
@@ -213,6 +196,16 @@ points(x=Msubcompressa_gbif$decimallongitude, y=Msubcompressa_gbif$decimallatitu
 # Ajouter un titre
 title("Occurrences de Miconia subcompressa")
 ```
+
+## Carte des occurences avec Simplemappr
+
+Nous allons faire un expection à ce point et allons voir un autre logiciel pour faire des cartes d'occurrences. Le nom du logiciel est [Simplemappr](http://www.simplemappr.net/) et ila l'avantage d'être très simple. Avant de l'utiliser, on devra cependant exporter les données simplifiées de Miconia.
+
+```{r "liste d'espèces", eval=FALSE}
+write.table(Msubcompressa_gbif[,c(1,3,2)],file="./data/Msubcompressa_gbif.csv", row.names=FALSE, sep=",", quote=FALSE, col.names=FALSE)
+```
+
+Maintenant, cliquez sur ce [lien](http://www.simplemappr.net/) pour accéder à la page web. Cliquez sur `Point Data`, puis importez les données que vous venez de sauver `Msubcompressa_gbif.csv`. Vous pouvez ensuite jouer avec la carte.
 
 
 ## Challenge 1
