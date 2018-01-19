@@ -4,12 +4,13 @@
 
 Ce dépôt contient le matériel pour un atelier d'une journée sur l'analyse de données de biodiversité, plus précisément les données d'occurrences. Les exercices de l'atelier sont effectués dans le logiciel R.
 
-## Matériel
+Veuillez télécharger le contenu du dossier en cliquant sur le boutton "clone or download". Ensuite, vous aurez tout le matériel sur votre ordinateur.
 
-[Tutoriel](http://htmlpreview.github.com/?https://github.com/simjoly/BiodiversityWorkshop-Haiti2018/blob/master/Tutoriel.html) | Tutoriel avec exemples dans R
+Le tutoriel se trouve dans le fichier html Tutoriel.html. vous pouvez l'ouvrir endouble-cliquant sur le fichier. Vous pouvez ensuite suivre les instructions indiquées dans le fichier.
 
-[Solutions aux défis proposés dans le tutoriel]() | À venir ...
+La présentation donnée lors de l'atelier s'appelle `Joly_Haiti2018.pdf`.
 
+Bon travail!
 
 ----
 
